@@ -9,10 +9,14 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'is_deleted'];
+    protected $fillable = ['name', 'price', 'is_deleted', 'user_id'];
 
     public function scopeNotDeleted($query)
     {
         return $query->where('is_deleted', 0);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
