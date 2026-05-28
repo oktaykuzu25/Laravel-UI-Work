@@ -12,8 +12,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $userId = auth()->id();
-        $books = User::find($userId)->books()->notDeleted()->get();
+        $books = Book::notDeleted()->visibleTo(auth()->user())->get();
         return view('books.index', compact('books'));
     }
 
@@ -33,13 +32,13 @@ class BookController extends Controller
     }
     public function edit($id)
     {
-        $book = Book::notDeleted()->findOrFail($id);
+        $book = Book::notDeleted()->visibleTo(auth()->user())->findOrFail($id);
         return view('books.edit', compact('book'));
     }
 
     public function update(Request $request, $id)
     {
-        $book = Book::notDeleted()->findOrFail($id);
+        $book = Book::notDeleted()->visibleTo(auth()->user())->findOrFail($id);
         $book->name = $request->name;
         $book->price = $request->price;
         $book->save();
@@ -49,7 +48,7 @@ class BookController extends Controller
 
     public function destroy($id)
     {
-        $book = Book::findOrFail($id);
+        $book = Book::notDeleted()->visibleTo(auth()->user())->findOrFail($id);
         $book->update(['is_deleted' => 1]);
 
         return redirect()->route('books.index');

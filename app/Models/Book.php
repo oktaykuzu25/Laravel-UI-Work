@@ -15,6 +15,16 @@ class Book extends Model
     {
         return $query->where('is_deleted', 0);
     }
+
+    public function scopeVisibleTo($query, $user)
+    {
+        if ($user->role === 'admin') {
+            return $query;
+        }
+
+        return $query->where('user_id', $user->id);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
