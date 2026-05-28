@@ -26,4 +26,27 @@ class BookController extends Controller
         $books->save();
         return redirect()->route('books.index');
     }
+    public function edit($id)
+    {
+        $book = Book::findorfail($id);
+        return view('books.edit', compact('book'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $book = Book::findOrFail($id);
+        $book->name = $request->name;
+        $book->price = $request->price;
+        $book->save();
+
+        return redirect()->route('books.index');
+    }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return redirect()->route('books.index');
+    }
 }
