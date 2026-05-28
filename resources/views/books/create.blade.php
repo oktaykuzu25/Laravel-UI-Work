@@ -10,6 +10,16 @@
                     <div class="card-body">
                         <h1>Create Book</h1>
                         <form action ="{{ route('books.store') }}" method="POST">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             @csrf
                             <div class="form-group">
                                 <label for="">Book Name</label>
