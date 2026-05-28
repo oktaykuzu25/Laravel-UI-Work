@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Http\Requests\BookStoreRequest;
+use App\Models\User;
 
 class BookController extends Controller
 {
 
     public function index()
     {
-        $books = Book::notDeleted()->get();
+        $userId = auth()->id();
+        $books = User::find($userId)->books()->notDeleted()->get();
         return view('books.index', compact('books'));
     }
 
@@ -25,6 +27,7 @@ class BookController extends Controller
         $books->name = $request->name;
         $books->price = $request->price;
         $books->is_deleted = 0;
+        $books->user_id = auth()->id();
         $books->save();
         return redirect()->route('books.index');
     }
