@@ -8,7 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin')->middleware('auth')->group(function () {
+Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/deneme', [TestController::class, 'test'])->name('test');
     Route::get('/detail', [TestController::class, 'detail'])->name('detail');
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
